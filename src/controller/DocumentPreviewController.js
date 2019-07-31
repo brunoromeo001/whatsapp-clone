@@ -1,8 +1,8 @@
-export class DocumentPreviewContoller{
+export class DocumentPreviewController{
 
     constructor(file){
 
-        this._file= file;
+        this._file = file;
     }
 
     getPreviewData(){
@@ -30,7 +30,7 @@ export class DocumentPreviewContoller{
                     reader.readAsDataURL(this._file);
                 break;
 
-                case 'applocation/pdf':
+                case 'application/pdf':
                 
                 break;
 

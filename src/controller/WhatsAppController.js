@@ -1,6 +1,6 @@
 import {Format} from './../utils/Format';
 import {CameraController} from './CameraController';
-import {DocumentPreviewContoller} from './DocumentPreviewContoller';
+import {DocumentPreviewController} from './DocumentPreviewController';
 
 export class WhatsAppController{
 
@@ -266,20 +266,20 @@ export class WhatsAppController{
         this.el.inputDocument.on('change', e=>{
 
             if(this.el.inputDocument.files.length){
-
+        
                 let file = this.el.inputDocument.files[0];
-
-                this._documentPreviewContoller = new DocumentPreviewContoller(file);
+        
+                this._documentPreviewController = new DocumentPreviewController(file);
                 
-                this._documentPreviewContoller.getPreviewData().then(result=>{
-
+                this._documentPreviewController.getPreviewData().then(result=>{
+        
                     this.el.imgPanelDocumentPreview.src = result.src;
-                    this.el.infoPanelDocumentPreview.innerHTML = result.info
+                    this.el.infoPanelDocumentPreview.innerHTML = result.info;
                     this.el.imagePanelDocumentPreview.show();
                     this.el.filePanelDocumentPreview.hide();
-
+        
                 }).catch(err=>{
-
+        
                     console.log(file.type);
 
                     switch(file.type){
@@ -300,8 +300,10 @@ export class WhatsAppController{
                         default:
                             this.el.iconPanelDocumentPreview.className = 'jcxhw icon-doc-generic';
                         break;
+                                
                     }
-                    this.el.filePanelDocumentPreview.innerHTML = file.name;
+                    
+                    this.el.filenamePanelDocumentPreview.innerHTML = file.name;
                     this.el.imagePanelDocumentPreview.hide();
                     this.el.filePanelDocumentPreview.show();
                 });
