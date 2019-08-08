@@ -52,7 +52,7 @@ export class MicrophoneController extends ClassEvent {
 
             this._recordedChunks = [];
 
-            this._mediaRecorder.addEventListener('dataavaileble', e=>{
+            this._mediaRecorder.addEventListener('dataavailable', e=>{
 
                 if (e.data.size > 0 ) this._recordedChunks.push(e.data);
 

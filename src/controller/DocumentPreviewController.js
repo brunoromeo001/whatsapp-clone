@@ -47,7 +47,7 @@ export class DocumentPreviewController{
 
                                 let viewport = page.getViewport(1);
                                 let canvas = document.createElement('canvas');
-                                let context = canvas.getContext('2d');
+                                let canvasContext  = canvas.getContext('2d');
 
                                 canvas.width = viewport.width;
                                 canvas.height = viewport.height;
