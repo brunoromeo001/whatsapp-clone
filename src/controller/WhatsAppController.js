@@ -1,7 +1,8 @@
-import {Format} from './../utils/Format';
-import {CameraController} from './CameraController';
-import {MicrophoneController} from './MicrophoneController';
-import {DocumentPreviewController} from './DocumentPreviewController';
+import { Format } from './../utils/Format';
+import { CameraController } from './CameraController';
+import { MicrophoneController } from './MicrophoneController';
+import { DocumentPreviewController } from './DocumentPreviewController';
+import { Firebase } from './../utils/Firebase';
 
 export class WhatsAppController{
 
@@ -10,7 +11,7 @@ export class WhatsAppController{
         this.elementsPrototype();
         this.loadElements();
         this.initEvents();
-
+        this._firebase = new Firebase();
     }
 
     loadElements(){
@@ -354,8 +355,7 @@ export class WhatsAppController{
         this.el.btnSendMicrophone.on('click', e=>{
 
             this.el.recordMicrophone.show();
-            this.el.btnSendMicrophone.hide();
-            this.startRecordMicrophoneTime();
+            this.el.btnSendMicrophone.hide();            
 
             this._microphoneController = new MicrophoneController();
 
@@ -366,6 +366,10 @@ export class WhatsAppController{
                 this._microphoneController.startRecorder();
             });
 
+            this._microphoneController.on('recordtimer', timer =>{
+
+                this.el.recordMicrophoneTimer.innerHTML = Format.toTime(timer);
+            });
            
         });
 
@@ -459,23 +463,11 @@ export class WhatsAppController{
         });
         
     }
-
-    startRecordMicrophoneTime(){
-
-        let start = Date.now();
-
-        this._recordMicrophoneInterval = setInterval(()=>{
-            
-            this.el.recordMicrophoneTimer.innerHTML = Format.toTime(Date.now() - start);
-
-        }, 100);
-    }
-
+    
     closeRecordMicrophone(){
 
         this.el.recordMicrophone.hide();
-        this.el.btnSendMicrophone.show();
-        clearInterval(this._recordMicrophoneInterval);
+        this.el.btnSendMicrophone.show();        
 
     }
 
