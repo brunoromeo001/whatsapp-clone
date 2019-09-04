@@ -21,25 +21,41 @@ export class WhatsAppController{
         this._firebase.initAuth()
             .then(response=>{
 
-                this._user = new User();
+                this._user = new User(response.user.email);
 
-                let userRef = User.findByEmail(response.user.email);
+                this._user.on('datachange', data => {
 
-                userRef.set({
+                    document.querySelector('title').innerHTML = data.name + ' - WhatsApp Clone';
 
-                    name: response.user.display,
-                    email: response.user.email,
-                    photo: response.user.photoURL
+                    this.el.inputNamePanelEditProfile.innerHTML = data.name;
 
-                }).then(()=>{
+                    if (data.photo){
+
+                        let photo = this.el.imgPanelEditProfile;
+                        photo.src = data.photo;
+                        photo.show();
+                        this.el.imgDefaultPanelEditProfile.hide();
+
+                        let photo2 = this.el.myPhoto.querySelector('img');
+                        photo2.src = data.photo;
+                        photo2.show();
+
+                    }
+                });
+
+                this._user.name = response.user.displayName;
+                this._user.email = response.user.email;
+                this._user.photo = response.user.photoURL;
+
+                this._user.save().then(()=>{
 
                     this.el.appContent.css({
                         display: 'flex'
-                    });
+                    });               
                 });
 
-            })
-            .catch(err=>{
+
+            }).catch(err=>{
 
                 console.error(err);
             });
@@ -198,7 +214,40 @@ export class WhatsAppController{
 
         this.el.btnSavePanelEditProfile.on('click', e=>{
 
-            console.log(this.el.inputNamePanelEditProfile.innerHTML);
+            this.el.btnSavePanelEditProfile = true;
+
+            this._user.name = this.el.inputNamePanelEditProfile.innerHTML;
+
+            this._user.save().then(()=>{
+
+                this.el.btnSavePanelEditProfile = false;
+            });
+        });
+
+        this.el.formPanelAddContact.on('submit', e=>{
+
+            e.preventDefault();
+
+            let formData = new formData(this.el.formPanelAddContact);
+
+            let contact = new User(formData.get('email'));
+
+            contact.on('datachenge', data=>{
+
+                if(data.name){
+
+                    this._user.addAddContact(contact).then(()=>{
+
+                        this.el.btnClosePanelAddContact.click();
+                        console.info('Contato foi adicionado!')
+                    });
+                }else{
+
+                    console.error('Usuário não foi encontrado!');
+                }
+            });
+
+            this.user.addAddContact();
         });
 
         this.el.contactsMessagesList.querySelectorAll('.contact-item').forEach(item =>{
