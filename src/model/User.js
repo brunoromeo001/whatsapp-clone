@@ -1,6 +1,5 @@
 import { Firebase } from './../utils/Firebase';
 import { Model } from './Model';
-import { constants } from 'perf_hooks';
 
 export class User extends Model{
 
@@ -74,11 +73,11 @@ export class User extends Model{
 
                 docs.forEach(doc => {
 
-                    let data = data.data();
+                    let data = doc.data();
 
                     data.id = doc.id;
 
-                    constants.push(data);
+                    contacts.push(data);
                 });
 
                 this.trigger('contactschange', docs);
