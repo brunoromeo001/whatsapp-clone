@@ -18,12 +18,17 @@ export class Message extends Model {
     get type(){ return this._data.type; }
     set type(value){ return this._data.type = value; }
 
+    get timeStamp(){ return this._data.timeStamp; }
+    set timeStamp(value){ return this._data.timeStamp = value; }
+
     get status(){ return this._data.status; }
     set status(value){ return this._data.status = value; }
 
     getViewElement(me = true){
 
-        let div = document.createElement = 'message';
+        let div = document.createElement('div');
+
+        div.className = 'message';
 
         switch (this.type){
 
@@ -283,7 +288,8 @@ export class Message extends Model {
                             </div>
                         </div>
                     </div>            
-                `;             
+                `;    
+            break;         
         }
 
         let className = (me) ? 'message-out' : 'message-in';
