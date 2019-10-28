@@ -74,7 +74,7 @@ export class Message extends Model {
 
             case 'image':
                 div.innerHTML = `
-                <div class="_3_7SH _3qMSo ">
+                <div class="_3_7SH _3qMSo">
                     <div class="KYpDv">
                         <div>
                             <div class="_3v3PK" style="width: 330px; height: 330px;">
@@ -94,7 +94,7 @@ export class Message extends Model {
                                         </div>
                                     </div>
                                 </div>
-                                <img src="${this.content}" class="_1JVSX message-photo" style="width: 100%; display:none">
+                                <img src="${this.content}" class="_1JVSX message-photo" style="width: 100%; display:none">                                
                                 <div class="_1i3Za"></div>
                             </div>
                             <div class="_2TvOE">
@@ -111,7 +111,7 @@ export class Message extends Model {
                             </svg>
                         </span>
                     </div>
-                </div>
+                 </div>
                 `;
 
                 div.querySelector('.message-photo').on('load', e=>{
@@ -294,7 +294,9 @@ export class Message extends Model {
                 console.info('upload', e);
  
             }, err => {
-                console.error(err)
+
+                console.error(err);
+
             }, () => {
  
                 uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
@@ -322,7 +324,7 @@ export class Message extends Model {
                 content,
                 timeStamp: new Date(),
                 status: 'wait',
-                type: 'text',
+                type,
                 from
     
             }).then(result=>{
