@@ -6,6 +6,7 @@ import { Firebase } from './../utils/Firebase';
 import { User } from './../model/User';
 import { Chat } from './../model/Chat';
 import { Message } from './../model/Message';
+import { Base64 } from '../utils/Base64';
 
 export class WhatsAppController{
 
@@ -208,7 +209,14 @@ export class WhatsAppController{
     
                     this.el.panelMessagesContainer.appendChild(view);
                     
-                } else if(me){
+                } else {
+
+                    let view = message.getViewElement(me);
+
+                    this.el.panelMessagesContainer.querySelector('#_' + data.id).innerHTML = view.innerHTML;
+                }                
+                
+                if(this.el.panelMessagesContainer.querySelector('#_' + data.id) && me){
 
                     let msgEl = this.el.panelMessagesContainer.querySelector('#_' + data.id);
 
@@ -648,7 +656,28 @@ export class WhatsAppController{
 
         this.el.btnSendDocument.on('click', e=>{
 
-            console.log('Enviando Documento')
+            let file = this.el.inputDocument.files[0];
+            let base64 = this.el.imgPanelDocumentPreview.src;
+
+            if (file.type == 'application/pdf'){
+
+                Base64.toFile(base64).then(filePreview => {
+
+                    Message.sendDocument(
+                        this._contactActive.chatId,
+                        this._user.email, file, filePreview, this.el.infoPanelDocumentPreview.innerHTML
+                    );
+                });
+            } else{
+
+                Message.sendDocument(
+                    this._contactActive.chatId,
+                    this._user.email, file
+                );
+            }
+
+            this.el.btnClosePanelDocumentPreview.click();
+           
         });
 
         this.el.btnAttachContact.on('click', e=>{
